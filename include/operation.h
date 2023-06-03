@@ -1,12 +1,20 @@
 #pragma once
 #include <stdint.h>
+#include "register.h"
 
 typedef struct OPERATION_STRUCT
 {
   uint8_t opcode;
-  uint8_t operands_count;
   int8_t *operands;
 } operation_S;
 
-operation_S *create_new_operation(uint8_t opcode, uint8_t operands_count);
+operation_S *create_new_operation(uint8_t opcode);
 void modify_operation_operand(operation_S *operation, uint8_t index, int8_t value);
+uint8_t get_operands_count(uint8_t opcode);
+void handle_move_operation(register_S **registers, int8_t *operands);
+void handle_add_operation_r(register_S **registers, int8_t *operands);
+void handle_add_operation(register_S **registers, int8_t *operands);
+void handle_sub_operation_r(register_S **registers, int8_t *operands);
+void handle_sub_operation(register_S **registers, int8_t *operands);
+void handle_print_num_operation(register_S **registers, int8_t *operands);
+void handle_print_char_operation(register_S **registers, int8_t *operands);

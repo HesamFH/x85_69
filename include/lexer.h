@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "operation.h"
 
 typedef struct LEXER_STRUCT
 {
@@ -9,3 +10,5 @@ typedef struct LEXER_STRUCT
 } lexer_S;
 
 lexer_S* init_lexer(char* src);
+uint8_t lexer_next(lexer_S* lexer);
+operation_S* lexer_advance(lexer_S* lexer);
