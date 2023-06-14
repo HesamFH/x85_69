@@ -51,7 +51,7 @@ void interpret(char *source, register_S **registers)
       break;
 
     default:
-      printf("Error: operation \"%x\" not found!\n", curr_operation->opcode);
+      printf("Error: operation \"%x\" not found!", curr_operation->opcode);
       exit(1);
       break;
     }

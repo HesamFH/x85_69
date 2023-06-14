@@ -35,6 +35,5 @@ operation_S *lexer_advance(lexer_S *lexer)
       modify_operation_operand(operation, i, lexer_next(lexer));
     }
   }
-  uint8_t _ = lexer_next(lexer);
   return operation;
 }

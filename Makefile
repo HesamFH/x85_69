@@ -3,3 +3,6 @@ GCC_FLAGS = -o x85_69 -Iinclude
 
 default:
 	gcc $(SOURCE_FILES) $(GCC_FLAGS)
+
+compile-debug:
+	gcc $(SOURCE_FILES) $(GCC_FLAGS) -g

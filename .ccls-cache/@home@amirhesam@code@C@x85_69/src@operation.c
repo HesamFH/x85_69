@@ -22,7 +22,7 @@ operation_S *create_new_operation(uint8_t opcode)
     operation->operands[1] = 0;
     break;
   default:
-    printf("Error: Operation cannot have %d operands\n", operands_count);
+    printf("Error: Operation cannot have %d operands", operands_count);
     exit(1);
     break;
   }
@@ -80,7 +80,7 @@ uint8_t get_operands_count(uint8_t opcode)
     break;
 
   default:
-    printf("Error: Operation \"%x\" could not be found\n", opcode);
+    printf("Error: Operation \"%x\" could not be found", opcode);
     exit(1);
     break;
   }
@@ -90,7 +90,7 @@ void handle_move_operation(register_S **registers, int8_t *operands)
 {
   if (operands[1] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   modify_register_value(registers[operands[1] - 1], operands[0]);
@@ -101,7 +101,7 @@ void handle_add_operation_r(register_S **registers, int8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
-    printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
+    printf("Error: Register \"%x\" or \"%x\" could not be found", operands[0], operands[1]);
     exit(1);
   }
   register_S *reg_one = registers[operands[0] - 1];
@@ -114,7 +114,7 @@ void handle_add_operation(register_S **registers, int8_t *operands)
 {
   if (operands[1] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   register_S *reg = registers[operands[1] - 1];
@@ -126,7 +126,7 @@ void handle_sub_operation_r(register_S **registers, int8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
-    printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
+    printf("Error: Register \"%x\" or \"%x\" could not be found", operands[0], operands[1]);
     exit(1);
   }
   register_S *reg_one = registers[operands[0] - 1];
@@ -139,7 +139,7 @@ void handle_sub_operation(register_S **registers, int8_t *operands)
 {
   if (operands[1] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   register_S *reg = registers[operands[1] - 1];
@@ -151,7 +151,7 @@ void handle_mul_operation_r(register_S **registers, int8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
-    printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
+    printf("Error: Register \"%x\" or \"%x\" could not be found", operands[0], operands[1]);
     exit(1);
   }
   register_S *reg_one = registers[operands[0] - 1];
@@ -164,7 +164,7 @@ void handle_mul_operation(register_S **registers, int8_t *operands)
 {
   if (operands[1] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   register_S *reg = registers[operands[1] - 1];
@@ -176,7 +176,7 @@ void handle_div_operation_r(register_S **registers, int8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
-    printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
+    printf("Error: Register \"%x\" or \"%x\" could not be found", operands[0], operands[1]);
     exit(1);
   }
   register_S *reg_one = registers[operands[0] - 1];
@@ -188,7 +188,7 @@ void handle_div_operation(register_S **registers, int8_t *operands)
 {
   if (operands[1] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   register_S *reg = registers[operands[1] - 1];
@@ -200,7 +200,7 @@ void handle_print_num_operation(register_S **registers, int8_t *operands)
 {
   if (operands[0] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   printf("%d\n", get_register_value(registers[operands[0] - 1]));
@@ -210,7 +210,7 @@ void handle_print_char_operation(register_S **registers, int8_t *operands)
 {
   if (operands[0] > 4)
   {
-    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    printf("Error: Register \"%x\" could not be found", operands[1]);
     exit(1);
   }
   printf("%c", get_register_value(registers[operands[0] - 1]));
