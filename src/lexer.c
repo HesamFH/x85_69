@@ -1,5 +1,4 @@
 #include "lexer.h"
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,7 +21,7 @@ uint8_t lexer_next(lexer_S *lexer)
 
 operation_S *lexer_advance(lexer_S *lexer)
 {
-  if (lexer->val_index >= strlen(lexer->source))
+  if (lexer->current_value == 0x00)
   {
     return NULL;
   }
