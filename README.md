@@ -1,3 +1,6 @@
 # X85_69
-a simple 8-bit virtual machine
-###### it's not even going to be an actual virtual machine 💀
+a simple (and very bad) 8-bit virtual machine
+###### it's not even an actual virtual machine 💀
+## TODO
+[ ] FLAGS register
+[ ] change the readfile function

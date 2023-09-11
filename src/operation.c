@@ -84,6 +84,12 @@ uint8_t get_operands_count(uint8_t opcode)
   case 0x0d:
     return 1;
     break;
+  case 0x0e:
+    return 2;
+    break;
+  case 0x0f:
+    return 1;
+    break;
 
   default:
     printf("Error: Operation \"%x\" could not be found\n", opcode);
@@ -102,7 +108,7 @@ void handle_move_operation(register_S **registers, int8_t *operands)
   modify_register_value(registers[operands[1] - 1], operands[0]);
 }
 
-void handle_move_to_memory_operation(register_S **registers ,int8_t *operands, uint8_t* memory)
+void handle_move_to_memory_operation(register_S **registers, int8_t *operands, uint8_t *memory)
 {
   if (operands[0] > 4)
   {
@@ -112,7 +118,7 @@ void handle_move_to_memory_operation(register_S **registers ,int8_t *operands, u
   memory[operands[1]] = get_register_value(registers[operands[0] - 1]);
 }
 
-void handle_move_from_memory_operation(register_S **registers, int8_t *operands, uint8_t* memory)
+void handle_move_from_memory_operation(register_S **registers, int8_t *operands, uint8_t *memory)
 {
   if (operands[1] > 4)
   {
@@ -240,4 +246,9 @@ void handle_print_char_operation(register_S **registers, int8_t *operands)
     exit(1);
   }
   printf("%c", get_register_value(registers[operands[0] - 1]));
+}
+
+void handle_move_imm_to_ram_operation(int8_t *operands, uint8_t *memory)
+{
+  memory[operands[1]] = operands[0];
 }

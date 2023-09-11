@@ -20,7 +20,7 @@ uint8_t lexer_next(lexer_S *lexer)
     return 0;
   }
   lexer->val_index++;
-  lexer->current_value = (uint8_t) lexer->source[lexer->val_index];
+  lexer->current_value = (uint8_t)lexer->source[lexer->val_index];
   return lexer->current_value;
 }
 
@@ -41,4 +41,9 @@ operation_S *lexer_advance(lexer_S *lexer)
   }
   uint8_t _ = lexer_next(lexer);
   return operation;
+}
+
+void handle_jump_operation(int8_t *operands, lexer_S *lexer)
+{
+  lexer->val_index = operands[0];
 }

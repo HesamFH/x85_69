@@ -3,7 +3,7 @@
 #include "interpret.h"
 #include "lexer.h"
 
-void interpret(char *source, register_S **registers, uint8_t* memory)
+void interpret(char *source, register_S **registers, uint8_t *memory)
 {
   lexer_S *lexer = init_lexer(source);
 
@@ -12,7 +12,6 @@ void interpret(char *source, register_S **registers, uint8_t* memory)
     operation_S *curr_operation = lexer_advance(lexer);
     if (curr_operation == NULL)
       break;
-
 
     switch (curr_operation->opcode)
     {
@@ -54,6 +53,12 @@ void interpret(char *source, register_S **registers, uint8_t* memory)
       break;
     case 0x0d:
       handle_print_char_operation(registers, curr_operation->operands);
+      break;
+    case 0x0e:
+      handle_move_imm_to_ram_operation(curr_operation->operands, memory);
+      break;
+    case 0x0f:
+      handle_jump_operation(curr_operation->operands, lexer);
       break;
 
     default:

@@ -26,7 +26,7 @@ int main(int argc, char **args)
 	register_S *counter = create_new_register(3);
 	register_S *data = create_new_register(4);
 
-	register_S **registers = malloc(sizeof(void*) * 4);
+	register_S **registers = malloc(sizeof(void *) * 4);
 	registers[0] = accumulator;
 	registers[1] = base;
 	registers[2] = counter;
