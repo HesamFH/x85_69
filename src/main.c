@@ -17,6 +17,9 @@ int main(int argc, char **args)
 	// reading the file
 	char *source = readfile(args[1]);
 
+	// creating the memory
+	uint8_t memory[256];
+
 	// creating the registers
 	register_S *accumulator = create_new_register(1);
 	register_S *base = create_new_register(2);
@@ -29,7 +32,7 @@ int main(int argc, char **args)
 	registers[2] = counter;
 	registers[3] = data;
 
-	interpret(source, registers);
+	interpret(source, registers, memory);
 
 	//* Tests Section
 	//*

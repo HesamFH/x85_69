@@ -73,9 +73,15 @@ uint8_t get_operands_count(uint8_t opcode)
     return 2;
     break;
   case 0x0a:
-    return 1;
+    return 2;
     break;
   case 0x0b:
+    return 2;
+    break;
+  case 0x0c:
+    return 1;
+    break;
+  case 0x0d:
     return 1;
     break;
 
@@ -94,6 +100,26 @@ void handle_move_operation(register_S **registers, int8_t *operands)
     exit(1);
   }
   modify_register_value(registers[operands[1] - 1], operands[0]);
+}
+
+void handle_move_to_memory_operation(register_S **registers ,int8_t *operands, uint8_t* memory)
+{
+  if (operands[0] > 4)
+  {
+    printf("Error: Register \"%x\" could not be found\n", operands[0]);
+    exit(1);
+  }
+  memory[operands[1]] = get_register_value(registers[operands[0] - 1]);
+}
+
+void handle_move_from_memory_operation(register_S **registers, int8_t *operands, uint8_t* memory)
+{
+  if (operands[1] > 4)
+  {
+    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    exit(1);
+  }
+  modify_register_value(registers[operands[1] - 1], memory[operands[0]]);
 }
 
 // add two registers and save the result on the second register (operands[1])

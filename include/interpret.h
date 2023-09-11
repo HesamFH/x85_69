@@ -3,4 +3,4 @@
 #include <stdio.h>
 #include "register.h"
 
-void interpret(char* source, register_S** registers);
+void interpret(char* source, register_S** registers, uint8_t* memory);
