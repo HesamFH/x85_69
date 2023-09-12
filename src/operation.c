@@ -90,6 +90,12 @@ uint8_t get_operands_count(uint8_t opcode)
   case 0x0f:
     return 1;
     break;
+  case 0x10:
+    return 1;
+    break;
+  case 0x11:
+    return 1;
+    break;
 
   default:
     printf("Error: Operation \"%x\" could not be found\n", opcode);
@@ -250,5 +256,20 @@ void handle_print_char_operation(register_S **registers, int8_t *operands)
 
 void handle_move_imm_to_ram_operation(int8_t *operands, uint8_t *memory)
 {
-  memory[operands[1]] = operands[0];
+  memory[operands[1] - 1] = operands[0];
+}
+
+void handle_set_register_to_zero(register_S **registers, int8_t *operands)
+{
+  if (operands[0] > 4)
+  {
+    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    exit(1);
+  }
+  registers[operands[0] - 1] = 0;
+}
+
+void handle_set_mem_addr_to_zero(int8_t *operands, uint8_t *memory)
+{
+  memory[operands[0]] = 0;
 }

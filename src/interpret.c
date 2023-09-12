@@ -60,6 +60,12 @@ void interpret(char *source, register_S **registers, uint8_t *memory)
     case 0x0f:
       handle_jump_operation(curr_operation->operands, lexer);
       break;
+    case 0x10:
+      handle_set_register_to_zero(registers, curr_operation->operands);
+      break;
+    case 0x11:
+      handle_move_imm_to_ram_operation(curr_operation->operands, memory);
+      break;
 
     default:
       printf("Error: operation \"%x\" not found!\n", curr_operation->opcode);

@@ -15,10 +15,6 @@ lexer_S *init_lexer(char *src)
 
 uint8_t lexer_next(lexer_S *lexer)
 {
-  if (lexer->val_index + 1 >= strlen(lexer->source))
-  {
-    return 0;
-  }
   lexer->val_index++;
   lexer->current_value = (uint8_t)lexer->source[lexer->val_index];
   return lexer->current_value;
@@ -26,7 +22,7 @@ uint8_t lexer_next(lexer_S *lexer)
 
 operation_S *lexer_advance(lexer_S *lexer)
 {
-  if (lexer->val_index + 1 >= strlen(lexer->source))
+  if (lexer->current_value == 0)
   {
     return NULL;
   }

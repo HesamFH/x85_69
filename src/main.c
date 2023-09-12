@@ -4,6 +4,7 @@
 #include "operation.h"
 #include "readfile.h"
 #include "interpret.h"
+#include "utils.h"
 
 int main(int argc, char **args)
 {
