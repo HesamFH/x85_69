@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "interpret.h"
-#include "lexer.h"
+#include "parser.h"
 
 void interpret(char *source, register_S **registers, uint8_t *memory)
 {
-  lexer_S *lexer = init_lexer(source);
+  parser_S *parser = init_parser(source);
 
   while (1)
   {
-    operation_S *curr_operation = lexer_advance(lexer);
+    operation_S *curr_operation = parser_advance(parser);
     if (curr_operation == NULL)
       break;
 
@@ -58,7 +58,7 @@ void interpret(char *source, register_S **registers, uint8_t *memory)
       handle_move_imm_to_ram_operation(curr_operation->operands, memory);
       break;
     case 0x0f:
-      handle_jump_operation(curr_operation->operands, lexer);
+      handle_jump_operation(curr_operation->operands, parser);
       break;
     case 0x10:
       handle_set_register_to_zero(registers, curr_operation->operands);

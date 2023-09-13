@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "register.h"
-#include "operation.h"
 #include "readfile.h"
 #include "interpret.h"
-#include "utils.h"
 
 int main(int argc, char **args)
 {
@@ -20,6 +18,7 @@ int main(int argc, char **args)
 
 	// creating the memory
 	uint8_t memory[256];
+
 
 	// creating the registers
 	register_S *accumulator = create_new_register(1);
