@@ -24,9 +24,7 @@ uint8_t parser_next(parser_S *parser)
   {
     return 0;
   }
-  while (parser->source[parser->val_index] == 0x20
-  || parser->source[parser->val_index] == 0x0d
-  || parser->source[parser->val_index] == 0x0a)
+  while (parser->source[parser->val_index] == 0x20 || parser->source[parser->val_index] == 0x0d || parser->source[parser->val_index] == 0x0a)
   {
     parser->val_index++;
   }
@@ -35,6 +33,7 @@ uint8_t parser_next(parser_S *parser)
   parser->val_index++;
   val[1] = parser->source[parser->val_index];
   parser->current_value = string_to_hex(val);
+  free(val);
   parser->val_index++;
   return parser->current_value;
 }
@@ -58,8 +57,14 @@ operation_S *parser_advance(parser_S *parser)
   return operation;
 }
 
-// It does not work yet
 void handle_jump_operation(int8_t *operands, parser_S *parser)
 {
-  parser->val_index = operands[0];
+  parser->val_index = operands[0] * 2;
+  char *val = malloc(2);
+  val[0] = parser->source[parser->val_index];
+  parser->val_index++;
+  val[1] = parser->source[parser->val_index];
+  parser->current_value = string_to_hex(val);
+  free(val);
+  parser->val_index++;
 }

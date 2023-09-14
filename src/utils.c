@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utils.h"
 
 uint8_t char_to_hex(char c)
@@ -67,4 +68,22 @@ uint8_t string_to_hex(char *s)
   uint8_t rightmost = char_to_hex(s[0]) * 16;
   uint8_t leftmost = char_to_hex(s[1]);
   return rightmost + leftmost;
+}
+
+char modified_string[5000];
+char *remove_char(char *s, char c)
+{
+  int i, j;
+  int length = strlen(s);
+  strcpy(modified_string, s);
+  for (i = j = 0; i < length; i++)
+  {
+    if (modified_string[i] != c)
+    {
+      modified_string[j] = modified_string[i];
+      j++;
+    }
+  }
+  modified_string[j] = '\0';
+  return modified_string;
 }

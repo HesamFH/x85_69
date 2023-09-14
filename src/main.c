@@ -3,6 +3,7 @@
 #include "register.h"
 #include "readfile.h"
 #include "interpret.h"
+#include "utils.h"
 
 int main(int argc, char **args)
 {
@@ -15,6 +16,13 @@ int main(int argc, char **args)
 
 	// reading the file
 	char *source = readfile(args[1]);
+
+	// removing whitespaces and other stuff
+	char *modified_source;
+	modified_source = remove_char(source, ' ');
+	free(source);
+	modified_source = remove_char(modified_source, '\n');
+	modified_source = remove_char(modified_source, '\r');
 
 	// creating the memory
 	uint8_t memory[256];
@@ -32,7 +40,7 @@ int main(int argc, char **args)
 	registers[2] = counter;
 	registers[3] = data;
 
-	interpret(source, registers, memory);
+	interpret(modified_source, registers, memory);
 
 	//* Tests Section
 	//*
