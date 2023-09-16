@@ -33,12 +33,14 @@ int main(int argc, char **args)
 	register_S *base = create_new_register(2);
 	register_S *counter = create_new_register(3);
 	register_S *data = create_new_register(4);
+	register_S *flags = create_new_register(5);
 
-	register_S **registers = malloc(sizeof(void *) * 4);
+	register_S **registers = malloc(sizeof(void *) * 5);
 	registers[0] = accumulator;
 	registers[1] = base;
 	registers[2] = counter;
 	registers[3] = data;
+	registers[4] = flags;
 
 	interpret(modified_source, registers, memory);
 
