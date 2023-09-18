@@ -153,7 +153,10 @@ void handle_add_operation_r(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
+  {
+    clear_flags_register(registers[4]);
     modify_register_value(reg_two, reg_one_val + reg_two_val);
+  }
 }
 
 // increase the value of a register
@@ -173,7 +176,10 @@ void handle_add_operation(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
+  {
+    clear_flags_register(registers[4]);
     modify_register_value(reg, reg_val + operands[0]);
+  }
 }
 
 // substract two registers and save the result on the second register (operands[1])
@@ -195,7 +201,10 @@ void handle_sub_operation_r(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 3);
   }
   else
+  {
+    clear_flags_register(registers[4]);
     modify_register_value(reg_two, reg_one_val - reg_two_val);
+  }
 }
 
 // decrease the value of a register
@@ -215,7 +224,10 @@ void handle_sub_operation(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 3);
   }
   else
+  {
+    clear_flags_register(registers[4]);
     modify_register_value(reg, reg_val - operands[0]);
+  }
 }
 
 // multiply the value of a register by another register
@@ -237,7 +249,10 @@ void handle_mul_operation_r(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
+  {
+    clear_flags_register(registers[4]);
     modify_register_value(reg_two, reg_one_val * reg_two_val);
+  }
 }
 
 // multiply the value of a register
@@ -257,7 +272,10 @@ void handle_mul_operation(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
+  {
+    clear_flags_register(registers[4]);
     modify_register_value(reg, reg_val * operands[0]);
+  }
 }
 
 // divide the value of a register by another register
@@ -272,6 +290,7 @@ void handle_div_operation_r(register_S **registers, int8_t *operands)
   register_S *reg_two = registers[operands[1] - 1];
   modify_register_value(reg_two, get_register_value(reg_one) / get_register_value(reg_two));
 }
+
 // divide the value of a register
 void handle_div_operation(register_S **registers, int8_t *operands)
 {

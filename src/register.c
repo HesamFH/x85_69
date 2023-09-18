@@ -19,3 +19,8 @@ void modify_register_value(register_S *reg, int8_t value)
 {
   reg->curr_value = value;
 }
+
+void clear_flags_register(register_S *flags)
+{
+  modify_register_value(flags, get_register_value(flags) & 0);
+}

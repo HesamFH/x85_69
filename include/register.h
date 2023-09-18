@@ -11,3 +11,4 @@ typedef struct REGISTER_STRUCT
 register_S *create_new_register(uint8_t index);
 int8_t get_register_value(register_S *reg);
 void modify_register_value(register_S *reg, int8_t value);
+void clear_flags_register(register_S *flags);
