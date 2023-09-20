@@ -64,7 +64,7 @@ void interpret(char *source, register_S **registers, uint8_t *memory)
       handle_set_register_to_zero(registers, curr_operation->operands);
       break;
     case 0x11:
-      handle_move_imm_to_ram_operation(curr_operation->operands, memory);
+      handle_set_mem_addr_to_zero(curr_operation->operands, memory);
       break;
     case 0x12:
       handle_compare(registers, curr_operation->operands);

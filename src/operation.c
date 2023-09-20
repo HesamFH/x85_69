@@ -326,7 +326,7 @@ void handle_print_char_operation(register_S **registers, int8_t *operands)
 
 void handle_move_imm_to_ram_operation(int8_t *operands, uint8_t *memory)
 {
-  memory[operands[1] - 1] = operands[0];
+  memory[operands[1]] = operands[0];
 }
 
 void handle_set_register_to_zero(register_S **registers, int8_t *operands)
