@@ -68,3 +68,26 @@ void handle_jump_operation(int8_t *operands, parser_S *parser)
   free(val);
   parser->val_index++;
 }
+void handle_jump_zero_operation(register_S *flags, int8_t *operands, parser_S *parser)
+{
+  if (flags->curr_value == 1)
+  {
+    handle_jump_operation(operands, parser);
+  }
+}
+
+void handle_jump_greater_operation(register_S *flags, int8_t *operands, parser_S *parser)
+{
+  if (flags->curr_value == 2)
+  {
+    handle_jump_operation(operands, parser);
+  }
+}
+
+void handle_jump_less_operation(register_S *flags, int8_t *operands, parser_S *parser)
+{
+  if (flags->curr_value == 3)
+  {
+    handle_jump_operation(operands, parser);
+  }
+}

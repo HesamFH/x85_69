@@ -66,6 +66,18 @@ void interpret(char *source, register_S **registers, uint8_t *memory)
     case 0x11:
       handle_move_imm_to_ram_operation(curr_operation->operands, memory);
       break;
+    case 0x12:
+      handle_compare(registers, curr_operation->operands);
+      break;
+    case 0x13:
+      handle_jump_zero_operation(registers[4], curr_operation->operands, parser);
+      break;
+    case 0x14:
+      handle_jump_greater_operation(registers[4], curr_operation->operands, parser);
+      break;
+    case 0x15:
+      handle_jump_less_operation(registers[4], curr_operation->operands, parser);
+      break;
 
     default:
       printf("Error: operation \"%x\" not found!\n", curr_operation->opcode);

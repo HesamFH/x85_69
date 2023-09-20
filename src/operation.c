@@ -96,6 +96,18 @@ uint8_t get_operands_count(uint8_t opcode)
   case 0x11:
     return 1;
     break;
+  case 0x12:
+    return 1;
+    break;
+  case 0x13:
+    return 1;
+    break;
+  case 0x14:
+    return 1;
+    break;
+  case 0x15:
+    return 1;
+    break;
 
   default:
     printf("Error: Operation \"%x\" could not be found\n", opcode);
@@ -142,6 +154,7 @@ void handle_add_operation_r(register_S **registers, int8_t *operands)
     printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
     exit(1);
   }
+  clear_flags_register(registers[4]);
   register_S *reg_one = registers[operands[0] - 1];
   register_S *reg_two = registers[operands[1] - 1];
   uint8_t reg_one_val = get_register_value(reg_one);
@@ -153,10 +166,7 @@ void handle_add_operation_r(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
-  {
-    clear_flags_register(registers[4]);
     modify_register_value(reg_two, reg_one_val + reg_two_val);
-  }
 }
 
 // increase the value of a register
@@ -167,6 +177,7 @@ void handle_add_operation(register_S **registers, int8_t *operands)
     printf("Error: Register \"%x\" could not be found\n", operands[1]);
     exit(1);
   }
+  clear_flags_register(registers[4]);
   register_S *reg = registers[operands[1] - 1];
   uint8_t reg_val = get_register_value(reg);
   if (reg_val + operands[0] > 255)
@@ -176,10 +187,7 @@ void handle_add_operation(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
-  {
-    clear_flags_register(registers[4]);
     modify_register_value(reg, reg_val + operands[0]);
-  }
 }
 
 // substract two registers and save the result on the second register (operands[1])
@@ -190,6 +198,7 @@ void handle_sub_operation_r(register_S **registers, int8_t *operands)
     printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
     exit(1);
   }
+  clear_flags_register(registers[4]);
   register_S *reg_one = registers[operands[0] - 1];
   register_S *reg_two = registers[operands[1] - 1];
   uint8_t reg_one_val = get_register_value(reg_one);
@@ -201,10 +210,7 @@ void handle_sub_operation_r(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 3);
   }
   else
-  {
-    clear_flags_register(registers[4]);
     modify_register_value(reg_two, reg_one_val - reg_two_val);
-  }
 }
 
 // decrease the value of a register
@@ -215,6 +221,7 @@ void handle_sub_operation(register_S **registers, int8_t *operands)
     printf("Error: Register \"%x\" could not be found\n", operands[1]);
     exit(1);
   }
+  clear_flags_register(registers[4]);
   register_S *reg = registers[operands[1] - 1];
   uint8_t reg_val = get_register_value(reg);
   if (reg_val - operands[0] < 0)
@@ -224,10 +231,7 @@ void handle_sub_operation(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 3);
   }
   else
-  {
-    clear_flags_register(registers[4]);
     modify_register_value(reg, reg_val - operands[0]);
-  }
 }
 
 // multiply the value of a register by another register
@@ -238,6 +242,7 @@ void handle_mul_operation_r(register_S **registers, int8_t *operands)
     printf("Error: Register \"%x\" or \"%x\" could not be found\n", operands[0], operands[1]);
     exit(1);
   }
+  clear_flags_register(registers[4]);
   register_S *reg_one = registers[operands[0] - 1];
   register_S *reg_two = registers[operands[1] - 1];
   uint8_t reg_one_val = get_register_value(reg_one);
@@ -249,10 +254,7 @@ void handle_mul_operation_r(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
-  {
-    clear_flags_register(registers[4]);
     modify_register_value(reg_two, reg_one_val * reg_two_val);
-  }
 }
 
 // multiply the value of a register
@@ -263,6 +265,7 @@ void handle_mul_operation(register_S **registers, int8_t *operands)
     printf("Error: Register \"%x\" could not be found\n", operands[1]);
     exit(1);
   }
+  clear_flags_register(registers[4]);
   register_S *reg = registers[operands[1] - 1];
   uint8_t reg_val = get_register_value(reg);
   if (reg_val * operands[0] > 255)
@@ -272,10 +275,7 @@ void handle_mul_operation(register_S **registers, int8_t *operands)
     modify_register_value(registers[4], get_register_value(registers[4]) | 2);
   }
   else
-  {
-    clear_flags_register(registers[4]);
     modify_register_value(reg, reg_val * operands[0]);
-  }
 }
 
 // divide the value of a register by another register
@@ -342,4 +342,32 @@ void handle_set_register_to_zero(register_S **registers, int8_t *operands)
 void handle_set_mem_addr_to_zero(int8_t *operands, uint8_t *memory)
 {
   memory[operands[0]] = 0;
+}
+
+// compare two registers and set the flags register
+void handle_compare(register_S **registers, uint8_t *operands)
+{
+  if (operands[0] > 4 || operands[1] > 4)
+  {
+    printf("Error: Register \"%x\" could not be found\n", operands[1]);
+    exit(1);
+  }
+  clear_flags_register(registers[4]);
+  uint8_t reg_one_val = get_register_value(registers[operands[0] - 1]);
+  uint8_t reg_two_val = get_register_value(registers[operands[1] - 1]);
+  if (reg_one_val == reg_two_val)
+  {
+    // set zero flag
+    modify_register_value(registers[4], get_register_value(registers[4]) | 1);
+  }
+  else if (reg_one_val > reg_two_val)
+  {
+    // set overflow flag
+    modify_register_value(registers[4], get_register_value(registers[4]) | 2);
+  }
+  else if (reg_one_val < reg_two_val)
+  {
+    // set both flags
+    modify_register_value(registers[4], get_register_value(registers[4]) | 3);
+  }
 }

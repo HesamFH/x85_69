@@ -27,3 +27,4 @@ void handle_print_char_operation(register_S **registers, int8_t *operands);
 void handle_move_imm_to_ram_operation(int8_t *operands, uint8_t *memory);
 void handle_set_register_to_zero(register_S **registers, int8_t *operands);
 void handle_set_mem_addr_to_zero(int8_t *operands, uint8_t *memory);
+void handle_compare(register_S **registers, uint8_t *operands);
