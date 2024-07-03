@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "operation.h"
+#include "utils.h"
 
 operation_S *create_new_operation(uint8_t opcode)
 {
@@ -369,5 +370,41 @@ void handle_compare(register_S **registers, uint8_t *operands)
   {
     // set both flags
     modify_register_value(registers[4], get_register_value(registers[4]) | 3);
+  }
+}
+
+void handle_jump_operation(int8_t *operands, parser_S *parser)
+{
+  parser->val_index = operands[0] * 2;
+  char *val = malloc(2);
+  val[0] = parser->source[parser->val_index];
+  parser->val_index++;
+  val[1] = parser->source[parser->val_index];
+  parser->current_value = string_to_hex(val);
+  free(val);
+  parser->val_index++;
+}
+
+void handle_jump_zero_operation(register_S *flags, int8_t *operands, parser_S *parser)
+{
+  if (flags->curr_value == 1)
+  {
+    handle_jump_operation(operands, parser);
+  }
+}
+
+void handle_jump_greater_operation(register_S *flags, int8_t *operands, parser_S *parser)
+{
+  if (flags->curr_value == 2)
+  {
+    handle_jump_operation(operands, parser);
+  }
+}
+
+void handle_jump_less_operation(register_S *flags, int8_t *operands, parser_S *parser)
+{
+  if (flags->curr_value == 3)
+  {
+    handle_jump_operation(operands, parser);
   }
 }
