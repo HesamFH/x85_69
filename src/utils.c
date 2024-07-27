@@ -57,7 +57,7 @@ uint8_t char_to_hex(char c)
     break;
 
   default:
-    printf("Error: Wrong Character \"%c\"", c);
+    printf("Error: Wrong Character \"%d\"", c);
     exit(1);
     break;
   }
@@ -70,7 +70,7 @@ uint8_t string_to_hex(char *s)
   return rightmost + leftmost;
 }
 
-char modified_string[5000];
+char modified_string[0xffff];
 char *remove_char(char *s, char c)
 {
   int i, j;

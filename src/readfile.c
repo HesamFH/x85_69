@@ -9,7 +9,7 @@ char *readfile(char *filename)
   long length;
   char *filecontent;
 
-  file = fopen(filename, "rb");
+  file = fopen(filename, "r");
 
   if (file)
   {

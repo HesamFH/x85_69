@@ -14,13 +14,19 @@ operation_S *create_new_operation(uint8_t opcode)
   case 0:
     break;
   case 1:
-    operation->operands = malloc(sizeof(int8_t));
+    operation->operands = malloc(sizeof(uint8_t));
     operation->operands[0] = 0;
     break;
   case 2:
-    operation->operands = malloc(sizeof(int8_t) * 2);
+    operation->operands = malloc(sizeof(uint8_t) * 2);
     operation->operands[0] = 0;
     operation->operands[1] = 0;
+    break;
+  case 3:
+    operation->operands = malloc(sizeof(uint8_t) * 3);
+    operation->operands[0] = 0;
+    operation->operands[1] = 0;
+    operation->operands[2] = 0;
     break;
   default:
     printf("Error: Operation cannot have %d operands\n", operands_count);
@@ -31,9 +37,9 @@ operation_S *create_new_operation(uint8_t opcode)
   return operation;
 }
 
-void modify_operation_operand(operation_S *operation, uint8_t index, int8_t value)
+void modify_operation_operand(operation_S *operation, uint8_t index, uint8_t value)
 {
-  if ((index + 1) > get_operands_count(operation->opcode) || index > 1)
+  if ((index + 1) > get_operands_count(operation->opcode) || index > 2)
   {
     printf("Error: Operation \"%x\" cannot have %d operands\n", operation->opcode, index + 1);
     exit(1);
@@ -50,10 +56,10 @@ uint8_t get_operands_count(uint8_t opcode)
     return 2;
     break;
   case 0x02:
-    return 2;
+    return 3;
     break;
   case 0x03:
-    return 2;
+    return 3;
     break;
   case 0x04:
     return 2;
@@ -86,28 +92,28 @@ uint8_t get_operands_count(uint8_t opcode)
     return 1;
     break;
   case 0x0e:
-    return 2;
+    return 3;
     break;
   case 0x0f:
-    return 1;
+    return 2;
     break;
   case 0x10:
     return 1;
     break;
   case 0x11:
-    return 1;
+    return 2;
     break;
   case 0x12:
     return 1;
     break;
   case 0x13:
-    return 1;
+    return 2;
     break;
   case 0x14:
-    return 1;
+    return 2;
     break;
   case 0x15:
-    return 1;
+    return 2;
     break;
 
   default:
@@ -117,7 +123,7 @@ uint8_t get_operands_count(uint8_t opcode)
   }
 }
 
-void handle_move_operation(register_S **registers, int8_t *operands)
+void handle_move_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[1] > 4)
   {
@@ -127,28 +133,28 @@ void handle_move_operation(register_S **registers, int8_t *operands)
   modify_register_value(registers[operands[1] - 1], operands[0]);
 }
 
-void handle_move_to_memory_operation(register_S **registers, int8_t *operands, uint8_t *memory)
+void handle_move_to_memory_operation(register_S **registers, uint8_t *operands, uint8_t *memory)
 {
   if (operands[0] > 4)
   {
     printf("Error: Register \"%x\" could not be found\n", operands[0]);
     exit(1);
   }
-  memory[operands[1]] = get_register_value(registers[operands[0] - 1]);
+  memory[((uint16_t)operands[2] * 0x100) + operands[1]] = get_register_value(registers[operands[0] - 1]);
 }
 
-void handle_move_from_memory_operation(register_S **registers, int8_t *operands, uint8_t *memory)
+void handle_move_from_memory_operation(register_S **registers, uint8_t *operands, uint8_t *memory)
 {
-  if (operands[1] > 4)
+  if (operands[2] > 4)
   {
     printf("Error: Register \"%x\" could not be found\n", operands[1]);
     exit(1);
   }
-  modify_register_value(registers[operands[1] - 1], memory[operands[0]]);
+  modify_register_value(registers[operands[2] - 1], memory[((uint16_t)operands[1] * 0x100) + operands[0]]);
 }
 
 // add two registers and save the result on the second register (operands[1])
-void handle_add_operation_r(register_S **registers, int8_t *operands)
+void handle_add_operation_r(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
@@ -171,7 +177,7 @@ void handle_add_operation_r(register_S **registers, int8_t *operands)
 }
 
 // increase the value of a register
-void handle_add_operation(register_S **registers, int8_t *operands)
+void handle_add_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[1] > 4)
   {
@@ -192,7 +198,7 @@ void handle_add_operation(register_S **registers, int8_t *operands)
 }
 
 // substract two registers and save the result on the second register (operands[1])
-void handle_sub_operation_r(register_S **registers, int8_t *operands)
+void handle_sub_operation_r(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
@@ -215,7 +221,7 @@ void handle_sub_operation_r(register_S **registers, int8_t *operands)
 }
 
 // decrease the value of a register
-void handle_sub_operation(register_S **registers, int8_t *operands)
+void handle_sub_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[1] > 4)
   {
@@ -236,7 +242,7 @@ void handle_sub_operation(register_S **registers, int8_t *operands)
 }
 
 // multiply the value of a register by another register
-void handle_mul_operation_r(register_S **registers, int8_t *operands)
+void handle_mul_operation_r(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
@@ -259,7 +265,7 @@ void handle_mul_operation_r(register_S **registers, int8_t *operands)
 }
 
 // multiply the value of a register
-void handle_mul_operation(register_S **registers, int8_t *operands)
+void handle_mul_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[1] > 4)
   {
@@ -280,7 +286,7 @@ void handle_mul_operation(register_S **registers, int8_t *operands)
 }
 
 // divide the value of a register by another register
-void handle_div_operation_r(register_S **registers, int8_t *operands)
+void handle_div_operation_r(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4 || operands[1] > 4)
   {
@@ -293,7 +299,7 @@ void handle_div_operation_r(register_S **registers, int8_t *operands)
 }
 
 // divide the value of a register
-void handle_div_operation(register_S **registers, int8_t *operands)
+void handle_div_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[1] > 4)
   {
@@ -305,7 +311,7 @@ void handle_div_operation(register_S **registers, int8_t *operands)
 }
 
 // random but useful operators
-void handle_print_num_operation(register_S **registers, int8_t *operands)
+void handle_print_num_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4)
   {
@@ -315,7 +321,7 @@ void handle_print_num_operation(register_S **registers, int8_t *operands)
   printf("%d\n", get_register_value(registers[operands[0] - 1]));
 }
 
-void handle_print_char_operation(register_S **registers, int8_t *operands)
+void handle_print_char_operation(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4)
   {
@@ -325,12 +331,12 @@ void handle_print_char_operation(register_S **registers, int8_t *operands)
   printf("%c", get_register_value(registers[operands[0] - 1]));
 }
 
-void handle_move_imm_to_ram_operation(int8_t *operands, uint8_t *memory)
+void handle_move_imm_to_ram_operation(uint8_t *operands, uint8_t *memory)
 {
-  memory[operands[1]] = operands[0];
+  memory[((uint16_t)operands[2] * 0x100) + operands[1]] = operands[0];
 }
 
-void handle_set_register_to_zero(register_S **registers, int8_t *operands)
+void handle_set_register_to_zero(register_S **registers, uint8_t *operands)
 {
   if (operands[0] > 4)
   {
@@ -340,9 +346,9 @@ void handle_set_register_to_zero(register_S **registers, int8_t *operands)
   registers[operands[0] - 1] = 0;
 }
 
-void handle_set_mem_addr_to_zero(int8_t *operands, uint8_t *memory)
+void handle_set_mem_addr_to_zero(uint8_t *operands, uint8_t *memory)
 {
-  memory[operands[0]] = 0;
+  memory[((uint16_t)operands[1] * 0x100) + operands[0]] = 0;
 }
 
 // compare two registers and set the flags register
@@ -373,9 +379,10 @@ void handle_compare(register_S **registers, uint8_t *operands)
   }
 }
 
-void handle_jump_operation(int8_t *operands, parser_S *parser)
+void handle_jump_operation(uint8_t *operands, parser_S *parser)
 {
-  parser->val_index = operands[0] * 2;
+  printf("%x\n", ((uint16_t)operands[1] * 0x100) + operands[0]);
+  parser->val_index = (((uint16_t)operands[1] * 0x100) + operands[0]) * 2;
   char *val = malloc(2);
   val[0] = parser->source[parser->val_index];
   parser->val_index++;
@@ -385,7 +392,7 @@ void handle_jump_operation(int8_t *operands, parser_S *parser)
   parser->val_index++;
 }
 
-void handle_jump_zero_operation(register_S *flags, int8_t *operands, parser_S *parser)
+void handle_jump_zero_operation(register_S *flags, uint8_t *operands, parser_S *parser)
 {
   if (flags->curr_value == 1)
   {
@@ -393,7 +400,7 @@ void handle_jump_zero_operation(register_S *flags, int8_t *operands, parser_S *p
   }
 }
 
-void handle_jump_greater_operation(register_S *flags, int8_t *operands, parser_S *parser)
+void handle_jump_greater_operation(register_S *flags, uint8_t *operands, parser_S *parser)
 {
   if (flags->curr_value == 2)
   {
@@ -401,7 +408,7 @@ void handle_jump_greater_operation(register_S *flags, int8_t *operands, parser_S
   }
 }
 
-void handle_jump_less_operation(register_S *flags, int8_t *operands, parser_S *parser)
+void handle_jump_less_operation(register_S *flags, uint8_t *operands, parser_S *parser)
 {
   if (flags->curr_value == 3)
   {

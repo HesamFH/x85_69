@@ -56,4 +56,3 @@ operation_S *parser_advance(parser_S *parser)
   uint8_t _ = parser_next(parser);
   return operation;
 }
-

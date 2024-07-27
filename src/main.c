@@ -25,7 +25,7 @@ int main(int argc, char **args)
 	modified_source = remove_char(modified_source, '\r');
 
 	// creating the memory
-	uint8_t memory[256];
+	uint8_t memory[0xffff];
 
 
 	// creating the registers
