@@ -381,7 +381,6 @@ void handle_compare(register_S **registers, uint8_t *operands)
 
 void handle_jump_operation(uint8_t *operands, parser_S *parser)
 {
-  printf("%x\n", ((uint16_t)operands[1] * 0x100) + operands[0]);
   parser->val_index = (((uint16_t)operands[1] * 0x100) + operands[0]) * 2;
   char *val = malloc(2);
   val[0] = parser->source[parser->val_index];
